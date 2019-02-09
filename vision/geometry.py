@@ -31,7 +31,6 @@ def is_bordertoucher(img, ellipse):
 
     elif cx + R >= w or cy + R >= h or cx - R <= 0 or cy - R <= 0:
         return True
-    
     else:
         return False
 
