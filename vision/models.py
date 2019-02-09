@@ -42,6 +42,42 @@ class SlimWide(nn.Module):
 
         return y #self.scalar * y - self.bias
 
+class SlimWideDeeper(nn.Module):
+
+    def __init__(self, in_channels=1, channels=64):
+        super().__init__()
+
+        self.convnet1 = nn.Sequential(
+                nn.Conv2d(in_channels, channels, kernel_size=7, padding=1,
+                          stride=1),
+                nn.ReLU(True))
+
+        self.convnet2 = nn.Sequential(
+                nn.Conv2d(channels, channels, kernel_size=7, padding=1,
+                          stride=1),
+                nn.ReLU(True))
+
+        self.convnet3 = nn.Sequential(
+                nn.Conv2d(channels, channels, kernel_size=7, padding=1,
+                          stride=1),
+                nn.AvgPool2d(kernel_size=2, stride=2), nn.ReLU(True))
+
+        self.convnet4 = nn.Sequential(
+                nn.Conv2d(channels, channels, kernel_size=7, padding=1,
+                          stride=1),
+                nn.AvgPool2d(kernel_size=2, stride=2), nn.ReLU(True))
+
+        self.convnet5 = nn.Conv2d(channels, 1, kernel_size=1, padding=0,
+                                  stride=1)
+
+    def forward(self, x):
+        y = self.convnet1(x)
+        y = self.convnet2(y)
+        y = self.convnet3(y)
+        y = self.convnet4(y)
+        y = self.convent5(y)
+
+        return y
 
 def torchvision_default_initialize_layer(m):
     # Recent init from torch repo.
