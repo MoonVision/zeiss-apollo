@@ -4,6 +4,24 @@ from django.utils import timezone
 from image.models import Image
 
 
+class Mask(models.Model):
+    create_time = models.DateTimeField(default=timezone.now)
+
+
+class DefectPosition(models.Model):
+    create_time = models.DateTimeField(default=timezone.now)
+    mask = models.ForeignKey(Mask, on_delete=models.CASCADE)
+
+
+class DefectPositionImage(models.Model):
+    create_time = models.DateTimeField(default=timezone.now)
+    defect_position = models.ForeignKey(DefectPosition, on_delete=models.CASCADE)
+    image = models.ForeignKey(Image, on_delete=models.CASCADE)
+
+    def get_defects(self):
+        return Defect.objects.filter(position_image=self)
+
+
 class Ellipse(models.Model):
     centerX = models.PositiveIntegerField()
     centerY = models.PositiveIntegerField()
@@ -12,21 +30,6 @@ class Ellipse(models.Model):
     rotation = models.FloatField()
 
 
-class Mask(models.Model):
-    create_time = models.DateTimeField(default=timezone.now)
-
-
-class Position(models.Model):
-    create_time = models.DateTimeField(default=timezone.now)
-    images = models.ManyToManyField(Image, through='PositionImage')
-
-
-class PositionImage(models.Model):
-    create_time = models.DateTimeField(default=timezone.now)
-    postition = models.ForeignKey(Position, on_delete=models.CASCADE)
-    image = models.ForeignKey(Image, on_delete=models.CASCADE)
-
-
 class Defect(models.Model):
-    position_image = models.ForeignKey(PositionImage, on_delete=models.CASCADE)
-    elipse = models.ForeignKey(Ellipse, on_delete=models.CASCADE)
+    position_image = models.ForeignKey(DefectPositionImage, on_delete=models.CASCADE)
+    ellipse = models.ForeignKey(Ellipse, on_delete=models.CASCADE)
