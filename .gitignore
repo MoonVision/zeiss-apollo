@@ -1,1 +1,4 @@
 **/photomask_trainingdata
+.idea
+__pycache__/
+db.sqlite3
