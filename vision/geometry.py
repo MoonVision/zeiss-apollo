@@ -1,6 +1,7 @@
 import cv2
 import numpy as np
 
+
 def ellipses_of_contour(contour):
     return cv2.fitEllipse(contour)
 
