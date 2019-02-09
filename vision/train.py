@@ -1,5 +1,6 @@
 from collections import defaultdict
 
+import numpy as np
 import torch
 from torch.utils.data import DataLoader
 import torch.nn.functional as F
@@ -15,10 +16,10 @@ def loss_hinge(result_sum, min_sum:float = 2000, max_sum:float = 6000):
     return loss
 
 def run_epoch(ds, m, optimizer, epoch_nr=0, num_workers=0, batch_size=4,
-              debug_print=True, debug_plot=True, train=True,
-              TRUTH_BOUNDS={"NO FEATURE": (0, 100 // 4),
-                            "COMPLETE FEATURE": (900 // 4, 2000 // 4),
-                            "BORDERTOUCHER": (500 // 4, 1800 // 4)}):
+              debug_print=True, grad_print=True, debug_plot=True, train=True,
+              TRUTH_BOUNDS={"NO FEATURE":       (0, 200 // 4),
+                            "COMPLETE FEATURE": (800 // 4, 2000 // 4),
+                            "BORDERTOUCHER":    (800 // 4, 1800 // 4)}):
     if train:
         m.train()
     else:
@@ -31,11 +32,16 @@ def run_epoch(ds, m, optimizer, epoch_nr=0, num_workers=0, batch_size=4,
     sums = defaultdict(list)  # How many pixels are active for each class
 
     for b, (imgs, classes) in enumerate(dl):
+        
+        imgs = imgs.to(device)
+        
         if train:
             optimizer.zero_grad()
+            preds = m(imgs)
+        else:
+            with torch.no_grad():
+                preds = m(imgs)
 
-        imgs = imgs.to(device)
-        preds = m(imgs)
         preds = F.softmax(preds, dim=2)
 
         single_losses = []
@@ -44,14 +50,21 @@ def run_epoch(ds, m, optimizer, epoch_nr=0, num_workers=0, batch_size=4,
 
             label = get_label(ds, _cls.item())
             lower, upper = TRUTH_BOUNDS[label]
-            l = loss_hinge(s, lower, upper) / ((lower + upper) * 0.5)
+            l = loss_hinge(s, lower, upper) #/ ((lower + upper) * 0.5)
             single_losses.append(l)
 
             sums[label].append(s.item())
 
         loss = sum(single_losses)
+        
         if train:
             loss.backward()
+            if grad_print:
+                grad_sum = 0.0
+                for p in m.parameters():
+                    grad_sum += (p.grad**2).sum().item()
+                print("GRAD L2", grad_sum)
+
             optimizer.step()
 
         if debug_print:
@@ -85,6 +98,7 @@ if __name__=="__main__":
     parser.add_argument("-e", "--epochs", default=20, type=int)
     parser.add_argument("-d", "--debug-print", action="store_true")
     parser.add_argument("-m", "--model", default="SlimWide")
+    parser.add_argument("-l", "--lr", default=1e-5, type=float)
     opt = parser.parse_args()
 
 
@@ -97,6 +111,8 @@ if __name__=="__main__":
              transforms.Normalize((0.4862745,), (0.1388,)), ])
 
     ds = ImageFolder('photomask_trainingdata')
+    
+    np.random.seed(42);torch.manual_seed(42)
     eval_idx, train_idx = stratified_split([x[1] for x in ds.samples])
 
     ds_eval = DataSubSet(ds, eval_idx, transform=tf_eval)
@@ -114,19 +130,27 @@ if __name__=="__main__":
     m.to(device)
 
     print("Model loaded:", opt.model)
-    optimizer = torch.optim.SGD(m.parameters(), lr=1e-5, momentum=0.9,
+    optimizer = torch.optim.SGD(m.parameters(), lr=opt.lr, momentum=0.9,
                                 weight_decay=1e-4)
     epoch_nr = 0
 
     print("Data train", len(ds_train), "Data eval", len(ds_eval))
     while epoch_nr <= opt.epochs:
         losses = run_epoch(ds_train, m, optimizer, epoch_nr=epoch_nr, train=True,
-                           debug_print=opt.debug_print, debug_plot=False)
+                           debug_print=opt.debug_print, grad_print=opt.debug_print, debug_plot=False)
 
         print(f"E[{epoch_nr}] AVERAGE train:", sum(losses) / len(losses))
 
         eval_losses = run_epoch(ds_eval, m, optimizer, epoch_nr=epoch_nr,
                                 train=False, debug_print=False, debug_plot=False)
-        print(f"E[{epoch_nr}] AVERAGE eval:", sum(eval_losses) / len(eval_losses))
+        print(f"E[{epoch_nr}] AVERAGE eval: ", sum(eval_losses) / len(eval_losses))
 
         epoch_nr += 1
+        if epoch_nr > 5:
+            print("RANDOM")
+            torchvision_default_initialize_weights(m)
+
+    m.eval()
+    with open(opt.model+".pth", "wb") as f:
+        torch.save(f, m.state_dict())
+
