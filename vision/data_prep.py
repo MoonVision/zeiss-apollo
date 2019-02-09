@@ -49,3 +49,7 @@ class DataSubSet(Dataset):
     def class_to_idx(self):
         return self.ds.class_to_idx
 
+
+def get_label(ds, k:int) -> str:
+    return {v:k for k,v in ds.class_to_idx.items()}[k]
+
