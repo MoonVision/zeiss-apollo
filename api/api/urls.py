@@ -20,11 +20,16 @@ from django.contrib import admin
 from django.conf.urls.static import static
 from django.urls import include, path, re_path
 from django.views.static import serve
-
 from rest_framework import routers
+
+import mask.views as mask_views
 
 
 router = routers.DefaultRouter()
+router.register('masks', mask_views.MaskViewSet, base_name='mask')
+router.register('defectpositions', mask_views.DefectPositionViewSet, base_name='defectposition')
+router.register('defectpositionimages', mask_views.DefectPositionImageViewSet, base_name='defectpositionimage')
+router.register('defects', mask_views.DefectViewSet, base_name='defect')
 
 urlpatterns = [
   re_path('^', include(router.urls)),
