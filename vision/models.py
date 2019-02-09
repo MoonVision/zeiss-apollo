@@ -7,24 +7,24 @@ class SlimWide(nn.Module):
         super().__init__()
 
         self.convnet1 = nn.Sequential(
-                nn.Conv2d(in_channels, channels, kernel_size=5, padding=1,
+                nn.Conv2d(in_channels, channels, kernel_size=7, padding=1,
                           stride=1),
                 # nn.BatchNorm2d(channels),
                 nn.ReLU(True))
 
         self.convnet2 = nn.Sequential(
-                nn.Conv2d(channels, channels, kernel_size=5, padding=1,
+                nn.Conv2d(channels, channels, kernel_size=7, padding=1,
                           stride=1),
                 # nn.BatchNorm2d(channels),
                 nn.ReLU(True))
 
         self.convnet3 = nn.Sequential(
-                nn.Conv2d(channels, channels, kernel_size=5, padding=1,
+                nn.Conv2d(channels, channels, kernel_size=7, padding=1,
                           stride=1),
                 nn.BatchNorm2d(channels),
                 nn.AvgPool2d(kernel_size=2, stride=2), nn.ReLU(True))
         self.convnet4 = nn.Sequential(
-                nn.Conv2d(channels, channels, kernel_size=5, padding=1,
+                nn.Conv2d(channels, channels, kernel_size=7, padding=1,
                           stride=1),
                 nn.BatchNorm2d(channels),
                 nn.AvgPool2d(kernel_size=2, stride=2), nn.ReLU(True))
