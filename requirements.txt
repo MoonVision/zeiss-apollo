@@ -3,3 +3,7 @@ djangorestframework
 django-cors-headers
 Pillow
 requests
+torch
+torchvision
+opencv-python==3.4.5.20
+
