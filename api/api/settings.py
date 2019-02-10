@@ -72,6 +72,7 @@ CORS_ALLOW_HEADERS = (
     'x-csrftoken',
     'x-csrf-token',
     'x-requested-with',
+    'access-control-allow-origin',
 )
 
 TEMPLATES = [
