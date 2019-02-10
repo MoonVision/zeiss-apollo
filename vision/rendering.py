@@ -11,7 +11,8 @@ def draw_ellipse(image, ellipses, thickness=2, color=(255,0,0)):
 
 def back_tf(tensor):
     tensor = tensor.detach()
-    tensor = torch.sigmoid(tensor)
+    tensor += torch.abs(torch.min(tensor))
+    tensor = tensor / torch.max(tensor)
 
     tensor *= 255
     tensor = tensor.int()

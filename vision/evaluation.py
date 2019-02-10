@@ -98,12 +98,11 @@ def evalutate_once(index, model, ds, device):
         pred = torch.nn.functional.upsample(model(img.unsqueeze(0)), scale_factor=(2, 2), mode="bilinear")
         pred = pred[0].squeeze()
 
-    mask = back_tf(pred)
-    probs = torch.sigmoid(pred).data.numpy()
+    probs = 255* torch.sigmoid(pred).data.numpy()
 
-    detection = detect_features(mask, probs)
-
-    img_a = cv2.cvtColor(mask, cv2.COLOR_GRAY2BGR)
+    detection = detect_features(probs.astype(np.uint8), probs)
+    #import pdb; pdb.set_trace()
+    img_a = cv2.cvtColor(back_tf(img[0]), cv2.COLOR_GRAY2BGR)
     img_annotated = annotate_prediction(img_a, detection)
 
     ell, probs, border = detection
