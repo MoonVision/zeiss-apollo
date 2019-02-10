@@ -19,7 +19,7 @@ class App extends Component {
               activeClassName="active"
               className="nav-selection primary"
             >
-              Mask Monitor Dashboard
+              MeRiT Monitor Dashboard
             </NavLink>
             <NavLink
               exact={true}

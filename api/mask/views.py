@@ -2,6 +2,7 @@ import json
 
 from rest_framework import viewsets
 from rest_framework.decorators import action
+from rest_framework.response import Response
 
 from mask.models import Mask, DefectPosition, DefectPositionImage, Defect
 from mask.serializers import MaskSerializer, DefectPositionSerializer, DefectPositionImageSerializer, DefectSerializer
@@ -10,6 +11,17 @@ from mask.serializers import MaskSerializer, DefectPositionSerializer, DefectPos
 class MaskViewSet(viewsets.ModelViewSet):
     queryset = Mask.objects.all().order_by('-pk')
     serializer_class = MaskSerializer
+
+    @action(detail=False, methods=['get'])
+    def overview(self, request):
+        masks = Mask.objects.all().order_by('pk')
+
+        defects = []
+        for mask in masks:
+            defects.append(Defect.objects.filter(position_image__defect_position__mask=mask).count())
+        mask_ids = masks.values_list('id', flat=True)
+
+        return Response({'masks': mask_ids, 'defects': defects})
 
 
 class DefectPositionViewSet(viewsets.ModelViewSet):
