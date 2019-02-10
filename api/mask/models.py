@@ -9,9 +9,13 @@ class Mask(models.Model):
 
 
 class DefectPosition(models.Model):
+    x = models.PositiveIntegerField()
+    y = models.PositiveIntegerField()
     create_time = models.DateTimeField(default=timezone.now)
     mask = models.ForeignKey(Mask, on_delete=models.CASCADE)
 
+    class Meta:
+        unique_together = ('mask', 'x', 'y')
 
 class DefectPositionImage(models.Model):
     create_time = models.DateTimeField(default=timezone.now)
