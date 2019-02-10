@@ -75,6 +75,7 @@ def detect_features(im, probs, thres=200, min_prob=0.5):
 
     return ellipses, propabilities, border_checker
 
+
 def annotate_prediction(im, detection):
     ellipses, propability, border_checker = detection
     annotated_im = im.copy()
@@ -89,39 +90,51 @@ def annotate_prediction(im, detection):
     return np.concatenate([im, annotated_im])
 
 
+def evalutate_once(index, model, ds, device):
+    img, cls = ds[index]
+    classes = []
+
+    with torch.no_grad():
+        pred = torch.nn.functional.upsample(model(img.unsqueeze(0)), scale_factor=(2, 2), mode="bilinear")
+        pred = pred[0].squeeze()
+
+    mask = back_tf(pred)
+    probs = torch.sigmoid(pred).data.numpy()
+
+    detection = detect_features(mask, probs)
+
+    img_a = cv2.cvtColor(mask, cv2.COLOR_GRAY2BGR)
+    img_annotated = annotate_prediction(img_a, detection)
+
+    ell, probs, border = detection
+    if ell:
+        ellipses = ell
+
+        labels = []
+        for b in border:
+            if b:
+                labels.append(label_map(1))
+            else:
+                labels.append(label_map(0))
+        classes.append(labels)
+    else:
+        classes.append([label_map(2)])
+        ellipses = None
+
+    return img_annotated, ellipses, classes
+
+
 def evaluate(model, ds, device):
     stacked_images = []
     ellipses_list = []
     classes = []
 
-    for img, cls in [ds[i] for i in range(len(ds))]:
+    for k in range(len(ds)):
+        img, ellipes, cls = evalutate_once(k, model, ds, device)
 
-        with torch.no_grad():
-            pred = torch.nn.functional.upsample(model(img.unsqueeze(0)), scale_factor=(2, 2), mode="bilinear")
-            pred = pred[0].squeeze()
-
-        mask = back_tf(pred)
-        probs = torch.sigmoid(pred).data.numpy()
-
-        detection = detect_features(mask, probs)
-
-        img_a = cv2.cvtColor(mask, cv2.COLOR_GRAY2BGR)
-        stacked_images.append(annotate_prediction(img_a, detection))
-
-        ell, probs, border = detection
-        if ell:
-            ellipses_list.append(ell)
-
-            labels = []
-            for b in border:
-                if b:
-                    labels.append(label_map(1))
-                else:
-                    labels.append(label_map(0))
-            classes.append(labels)
-        else:
-            classes.append([label_map(2)])
-            ellipses_list.append(None)
+        stacked_images.append(img)
+        ellipses_list.append(ellipsis)
+        classes.append(cls)
 
     return stacked_images, ellipses_list, classes
 
