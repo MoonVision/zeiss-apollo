@@ -4,6 +4,7 @@ import random
 import torch
 import json
 import cv2
+import time
 from vision.inference import run
 from vision.evaluation import evalutate_once, init_dataset, init_model
 from vision.geometry import attributes_of_ellipses
@@ -12,10 +13,8 @@ from io import BytesIO
 
 
 
-
-
-data_dir = "/Users/lukassanner/Documents/ZeissHackathon/zeiss-lab/photomask_trainingdata"
-model_path = "/Users/lukassanner/Documents/ZeissHackathon/zeiss-lab/vision/SlimWide_weakly_3.pth"
+data_dir = "./Archive/photomask_trainingdata"
+model_path = "./Archive/SlimWide_weakly_3.pth"
 
 model = init_model(model_path)
 ds = init_dataset(data_dir)
@@ -38,6 +37,7 @@ x_position = random.randint(10, 190)
 y_position = random.randint(10, 190)
 for k in range(len(ds)):
     imgs, ellipses, classes = evalutate_once(k, model, ds, device)
+    #print(imgs)
     buf = BytesIO()
     buf.write(cv2.imencode('.png', imgs)[1].tostring())
 
@@ -71,8 +71,7 @@ for k in range(len(ds)):
         x_position = random.randint(10, 190)
         y_position = random.randint(10, 190)
         position_remaining = random.randint(2, 4)
-    position_remaining -= 0
-
+    position_remaining -= 1
 
     data = {
         "mask_id": mask_id,
@@ -82,10 +81,11 @@ for k in range(len(ds)):
     for i, d in enumerate(defects):
         data[f'new_defects[{i}]'] = json.dumps(d)
 
-
-    if ellipses:
-        print(data)
-        print(files)
-        response = requests.post(f'{BASE_URL}/defectpositionimages/', files=files, data=data)
-        print(response.json())
-        break
+    print('~~~~~~~~~~~~~~~~~~~~~~~~Starting Upload~~~~~~~~~~~~~~~~~~~~~~~~~~~')
+    print(f'data {data}')
+    #print(f'files {files}')
+    response = requests.post(f'{BASE_URL}/defectpositionimages/', files=files,
+                data=data)
+    print(f'Got response: {response.json()}')
+    print('~~~~~~~~~~~~~~~~~~~~~~~~Upload Finished~~~~~~~~~~~~~~~~~~~~~~~~~~~')
+    time.sleep(.5)
