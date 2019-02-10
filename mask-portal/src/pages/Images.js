@@ -8,7 +8,7 @@ import CardList from "components/CardList/CardList"
 export default function Images({ match, history, location }) {
   let params = new URLSearchParams(location.search);
   const [images, setImages] = useState();
-  const selectedMask = params.get('mask')
+  const selectedMask = params.get('mask') ? params.get('mask') : '';
   const [currentMask, setCurrentMask] = useState(selectedMask);
 
   useEffect(
@@ -18,7 +18,11 @@ export default function Images({ match, history, location }) {
     , [selectedMask]
   )
   const loadImages = async () => {
-    const response = await api.get('/defectpositionimages/', {params: {mask: selectedMask}});
+    params = {}
+    if (selectedMask && selectedMask !== '') {
+      params['mask'] = selectedMask;
+    }
+    const response = await api.get('/defectpositionimages/', {params});
     setImages(response.data.results);
   }
 
@@ -51,7 +55,7 @@ export default function Images({ match, history, location }) {
         <CardList>
           {images.map(image => 
             <Card key={image.id}>
-              <img src={image.image.image} alt='' />
+              <img src={image.image_data.image} alt='' />
               <p>Image: {image.id}</p>
               <p>Defects: {image.defects.length}</p>
               <p>Taken {moment(image.create_time).calendar()}</p>

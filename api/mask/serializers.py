@@ -59,13 +59,15 @@ class DefectPositionImageSerializer(serializers.ModelSerializer):
     position_y = serializers.IntegerField(write_only=True)
     create_time = serializers.ReadOnlyField()
     defect_position = serializers.PrimaryKeyRelatedField(queryset=DefectPosition.objects.all(), required=False)
-    image = serializers.ImageField()
+    image = serializers.ImageField(write_only=True)
+    image_data = ImageSerializer(read_only=True, source='image')
     defects = DefectSerializer(many=True, source='get_defects', read_only=True)
     new_defects = DefectSerializer(many=True, remove_position_image=True, write_only=True)
 
     class Meta:
         model = DefectPositionImage
-        fields = ('id', 'defect_position', 'image', 'create_time', 'mask_id', 'defects', 'position_x', 'position_y', 'new_defects')
+        fields = ('id', 'defect_position', 'image', 'create_time', 'mask_id', 'defects', 'position_x',
+                  'position_y', 'new_defects', 'image_data')
 
     def create(self, validated_data):
         image = ImageSerializer().create({'image':validated_data['image']})
