@@ -30,6 +30,11 @@ def attributes_of_ellipses(ellipses):
     return (int(cx), int(cy)), (int(xax), int(yax)), angle, area
 
 
+def area_of_ellipse(ellipse):
+    _,_,_, area = attributes_of_ellipses(ellipse)
+    return area
+
+
 def is_bordertoucher(img, ellipse):
     dimensions = img.shape
     if len(dimensions) == 2:
