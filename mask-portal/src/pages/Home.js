@@ -26,7 +26,16 @@ function useInterval(callback, delay) {
   }, [delay]);
 }
 
-export default function Home() {
+const myStyle = {
+  padding: '25px',
+  display: 'grid',
+  gridGap: '25px',
+  justifyItems: 'stretch',
+  gridTemplateAreas: '"realtime chart"',
+  gridTemplateColumns: "300px auto",
+}
+
+export default function Home({ history, match }) {
   const [latestImage, setLatestImage] = useState();
 
   useInterval(async () => {
@@ -44,10 +53,16 @@ export default function Home() {
     setMasksOverivew(response.data);
   }, 250);
 
+  const onClickMask = (event) => {
+    let clickedPoint = event['points'][0]
+    let mask = clickedPoint['x'];
+    history.push(`/images/?mask=${mask}`)
+  };
+
   return (
     <div>
-      <CardList>
-        <Card>
+      <div style={myStyle}>
+        <Card style={{ 'gridArea': 'realtime' }}>
           <h3>Latest Image</h3>
           {latestImage ?
             <Fragment>
@@ -60,9 +75,10 @@ export default function Home() {
             <p>Loading...</p>
           }
         </Card>
-        <Card>
+        <Card style={{ 'gridArea': 'chart' }}>
           {masksOverview ?
             <Plot
+              style={{ height: 'inherit' }}
               data={[
                 {
                   x: masksOverview.masks,
@@ -72,8 +88,6 @@ export default function Home() {
               ]}
               config={{displayModeBar: false, scrollZoom: false}}
               layout={{
-                width: 300,
-                height: 300,
                 title: 'Mask History',
                 xaxis: {
                   title: "Mask ID",
@@ -92,12 +106,13 @@ export default function Home() {
                 showlegend: false,
                 hovermode: 'closest',
               }}
+              onClick={onClickMask}
             />
             :
             <p>Loading...</p>
           }
         </Card>
-      </CardList>
+      </div>
     </div>
   )
 }
