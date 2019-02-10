@@ -87,6 +87,8 @@ def run_epoch(ds, m, optimizer, epoch_nr=0, num_workers=0, batch_size=4,
 
 if __name__=="__main__":
 
+    #Outdated, see train_basic_covs.ipynb
+
     import argparse
     import importlib
 
