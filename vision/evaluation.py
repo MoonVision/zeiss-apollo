@@ -67,10 +67,8 @@ def detect_features(im, probs, thres=200, min_prob=0.5):
         else:
             return 0.0
 
-    contours = sorted(contours, key=lambda c: area_of_cont(c))
-    if len(contours) > 1:
-        import pdb;pdb.set_trace()
-
+    contours = sorted(contours, key=lambda c: area_of_cont(c), reverse=True)
+    
     # check for propability
     prob = get_propability(probs, largest_contour)
 
