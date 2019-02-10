@@ -62,7 +62,7 @@ class DefectPositionImageSerializer(serializers.ModelSerializer):
     image = serializers.ImageField(write_only=True)
     image_data = ImageSerializer(read_only=True, source='image')
     defects = DefectSerializer(many=True, source='get_defects', read_only=True)
-    new_defects = DefectSerializer(many=True, remove_position_image=True, write_only=True)
+    new_defects = DefectSerializer(many=True, remove_position_image=True, write_only=True, required=False)
 
     class Meta:
         model = DefectPositionImage
@@ -74,9 +74,10 @@ class DefectPositionImageSerializer(serializers.ModelSerializer):
         image.save()
         validated_data['image'] = image
         print(validated_data)
-        defects = validated_data.pop('new_defects')
+        defects = validated_data.pop('new_defects', None)
         defection_position_image = super(DefectPositionImageSerializer, self).create(validated_data)
-        for d in defects:
-            d['position_image'] = defection_position_image
-        DefectSerializer(many=True).create(defects)
+        if defects is not None:
+            for d in defects:
+                d['position_image'] = defection_position_image
+            DefectSerializer(many=True).create(defects)
         return defection_position_image
