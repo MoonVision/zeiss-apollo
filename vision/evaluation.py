@@ -7,6 +7,7 @@ from torchvision.datasets import ImageFolder
 from torchvision.transforms import Compose
 from torchvision import transforms
 
+from vision.data_prep import get_label
 from vision.geometry import ellipses_of_contour, \
     area_of_ellipse, is_bordertoucher, find_contours
 
@@ -68,7 +69,7 @@ def detect_features(im, probs, thres=200, min_prob=0.5):
             return 0.0
 
     contours = sorted(contours, key=lambda c: area_of_cont(c), reverse=True)
-    
+
     # check for propability
     prob = get_propability(probs, largest_contour)
 
@@ -191,18 +192,24 @@ def infer_and_eval(ds, m, device):
     for index in range(len(ds)):
 
         _, true_cls = ds[index]
-        label = label_map(true_cls)
+        #import pdb;pdb.set_trace()
+        label = get_label(ds, true_cls)
 
-        images, ellipses, classes = evalutate_once(index, m, ds, device)
+        images, ellipses, labels = evalutate_once(index, m, ds, device)
+        if ellipses is None or len(ellipses) == 0:
+            pred_label = ['NO FEATURE']
+        else:
+            pred_label = labels[0]
 
+        print(index, label, pred_label)
+        if label == pred_label[0]:
+            tp[label] += 1
+        else:
+            fp[label] += 1
 
-
-
-    pass
-
+    return (tp, fp)
 
 def main():
-    from pprint import pprint
     import argparse
     parser = argparse.ArgumentParser(description='ZEISS Lab training')
 
@@ -220,8 +227,9 @@ def main():
 
     m.to(device)
 
-    results = infer_and_eval(ds, m, device)
-    pprint(results)
+    tp, fp = infer_and_eval(ds, m, device)
+    print("TP", dict(tp))
+    print("FP", dict(fp))
 
 
 if __name__ == "__main__":
