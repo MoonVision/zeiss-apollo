@@ -1,11 +1,12 @@
+from collections import Counter
+
 import torch
 import numpy as np
 import cv2
-from PIL import Image
 from torchvision.datasets import ImageFolder
-from torch.utils.data import DataLoader
 from torchvision.transforms import Compose
 from torchvision import transforms
+
 
 from vision.geometry import ellipses_of_contour, \
     area_of_ellipse, is_bordertoucher, find_contours
@@ -61,12 +62,24 @@ def detect_features(im, probs, thres=200, min_prob=0.5):
                 largest_area = area
                 largest_contour = c
 
+    def area_of_cont(c):
+        if len(c) > 5:
+            return cv2.contourArea(c)
+        else:
+            return 0.0
+
+    contours = sorted(contours, key=lambda c: area_of_cont(c))
+    if len(contours) > 1:
+        import pdb;pdb.set_trace()
+
     # check for propability
     prob = get_propability(probs, largest_contour)
 
     if prob < min_prob:
         return [], [prob], [False]
     mask = np.zeros(im.shape)
+
+
     for c in contours:
         if len(c) > 6:
             ellipses.append(ellipses_of_contour(c))
@@ -94,12 +107,14 @@ def evalutate_once(index, model, ds, device):
     img, cls = ds[index]
     classes = []
 
+    img = img.to(device)
+
     with torch.no_grad():
         pred = torch.nn.functional.upsample(model(img.unsqueeze(0)), scale_factor=(2, 2), mode="bilinear")
         pred = pred[0].squeeze()
 
     mask = back_tf(pred)
-    probs = torch.sigmoid(pred).data.numpy()
+    probs = torch.sigmoid(pred).data.cpu().numpy()
 
     detection = detect_features(mask, probs)
 
@@ -172,3 +187,47 @@ def init_dataset(data_dir):
     return ds_eval
 
 
+def infer_and_eval(ds, m, device):
+
+    tp = Counter()
+    fp = Counter()
+
+
+    for index in range(len(ds)):
+
+        _, true_cls = ds[index]
+        label = label_map(true_cls)
+
+        images, ellipses, classes = evalutate_once(index, m, ds, device)
+
+
+
+
+    pass
+
+
+def main():
+    from pprint import pprint
+    import argparse
+    parser = argparse.ArgumentParser(description='ZEISS Lab training')
+
+    parser.add_argument("-i", "--in-data", required=True)
+    parser.add_argument("-m", "--model-dir", required=True)
+    opt = parser.parse_args()
+
+    ds = init_dataset(opt.in_data)
+    m = init_model(opt.model_dir)
+
+    if torch.cuda.is_available():
+        device = torch.device("cuda")
+    else:
+        device = torch.device("cpu")
+
+    m.to(device)
+
+    results = infer_and_eval(ds, m, device)
+    pprint(results)
+
+
+if __name__ == "__main__":
+    main()
