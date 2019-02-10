@@ -4,39 +4,6 @@ import random
 
 BASE_URL = 'http://localhost:8000'
 
-data = {
-    "mask_id": 1,
-    "position_x": 100,
-    "position_y": 120,
-    "new_defects": json.dumps([
-        {
-            "ellipse": {
-                "centerX": 123,
-                "centerY": 234,
-                "x": 1,
-                "y": 2,
-                "rotation": 34.3
-            }
-        }
-    ])
-}
-files = {
-    'image': open('/Users/mattnicolls/Downloads/zeiss_sample_2.tif', 'rb'),
-}
-response = requests.post(f'{BASE_URL}/defectpositionimages/', files=files, data=data)
-print(response.json())
-
-
-
-
-
-
-
-
-
-
-
-'''
 start_mask_response = requests.get(f'{BASE_URL}/masks/')
 mask_id = start_mask_response.json()['count'] + 1
 
@@ -58,29 +25,30 @@ for image_path in image_paths:
         position_remaining = random.randint(2, 4)
     position_remaining -= 0
 
+    defects = [
+        {
+            "ellipse": {
+                "centerX": 123,
+                "centerY": 234,
+                "x": 1,
+                "y": 2,
+                "rotation": 34.3
+            }
+        }
+    ]
     data = {
         "mask_id": mask_id,
-        "defect_x": x_position,
-        "defect_y": y_position,
-        "defects": json.dumps([
-            {
-                "ellipse": {
-                    "centerX": 123,
-                    "centerY": 234,
-                    "x": 1,
-                    "y": 2,
-                    "rotation": 34.3
-                }
-            }
-        ])
+        "position_x": x_position,
+        "position_y": y_position,
     }
+    for i, d in enumerate(defects):
+        data[f'new_defects[{i}]'] = json.dumps(d)
+
     files = {
-        'image': open('/Users/mattnicolls/Downloads/zeiss_sample_2.tif', 'rb'), # TODO: replace with image_path
+        'image': open('/Users/mattnicolls/Downloads/zeiss_sample_2.tif', 'rb'),
     }
     print(data)
-    print(files)
     response = requests.post(f'{BASE_URL}/defectpositionimages/', files=files,
                 data=data)
     print(response.json())
     break
-'''

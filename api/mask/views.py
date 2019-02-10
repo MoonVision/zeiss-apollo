@@ -34,9 +34,9 @@ class DefectPositionImageViewSet(viewsets.ModelViewSet):
         return queryset.order_by('-pk')
 
     def create(self, request, *args, **kwargs):
-        print(request.data)
-        request.data['new_defects[0]'] = json.loads(request.data['new_defects'])[0]
-        print(request.data)
+        for k in request.data.keys():
+            if k.startswith('new_defects'):
+                request.data[k] = json.loads(request.data[k])
         return super(DefectPositionImageViewSet, self).create(request, *args, **kwargs)
 
     def perform_create(self, serializer):
