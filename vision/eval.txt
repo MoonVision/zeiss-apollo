@@ -1,0 +1,22 @@
+../photomask_trainingdata/BORDERTOUCHER/033_4.tif
+../photomask_trainingdata/BORDERTOUCHER/031_4.tif
+../photomask_trainingdata/BORDERTOUCHER/031_2.tif
+../photomask_trainingdata/BORDERTOUCHER/005_4.tif
+../photomask_trainingdata/COMPLETE FEATURE/004_4.tif
+../photomask_trainingdata/COMPLETE FEATURE/027_1.tif
+../photomask_trainingdata/COMPLETE FEATURE/018_3.tif
+../photomask_trainingdata/COMPLETE FEATURE/004_1.tif
+../photomask_trainingdata/COMPLETE FEATURE/019_3.tif
+../photomask_trainingdata/COMPLETE FEATURE/022_2.tif
+../photomask_trainingdata/COMPLETE FEATURE/002_3.tif
+../photomask_trainingdata/COMPLETE FEATURE/021_4.tif
+../photomask_trainingdata/COMPLETE FEATURE/023_4.tif
+../photomask_trainingdata/COMPLETE FEATURE/022_3.tif
+../photomask_trainingdata/COMPLETE FEATURE/029_4.tif
+../photomask_trainingdata/COMPLETE FEATURE/006_4.tif
+../photomask_trainingdata/COMPLETE FEATURE/028_3.tif
+../photomask_trainingdata/COMPLETE FEATURE/028_2.tif
+../photomask_trainingdata/COMPLETE FEATURE/027_2.tif
+../photomask_trainingdata/NO FEATURE/003_3.tif
+../photomask_trainingdata/NO FEATURE/014_1.tif
+../photomask_trainingdata/NO FEATURE/032_4.tif

@@ -1,0 +1,89 @@
+../photomask_trainingdata/BORDERTOUCHER/005_3.tif
+../photomask_trainingdata/BORDERTOUCHER/006_1.tif
+../photomask_trainingdata/BORDERTOUCHER/008_2.tif
+../photomask_trainingdata/BORDERTOUCHER/008_3.tif
+../photomask_trainingdata/BORDERTOUCHER/009.tif
+../photomask_trainingdata/BORDERTOUCHER/010.tif
+../photomask_trainingdata/BORDERTOUCHER/011.tif
+../photomask_trainingdata/BORDERTOUCHER/012.tif
+../photomask_trainingdata/BORDERTOUCHER/020_3.tif
+../photomask_trainingdata/BORDERTOUCHER/030_1.tif
+../photomask_trainingdata/BORDERTOUCHER/030_2.tif
+../photomask_trainingdata/BORDERTOUCHER/030_3.tif
+../photomask_trainingdata/BORDERTOUCHER/030_4.tif
+../photomask_trainingdata/BORDERTOUCHER/031_1.tif
+../photomask_trainingdata/BORDERTOUCHER/031_3.tif
+../photomask_trainingdata/BORDERTOUCHER/033_1.tif
+../photomask_trainingdata/BORDERTOUCHER/033_2.tif
+../photomask_trainingdata/BORDERTOUCHER/033_3.tif
+../photomask_trainingdata/COMPLETE FEATURE/001_1.tif
+../photomask_trainingdata/COMPLETE FEATURE/001_2.tif
+../photomask_trainingdata/COMPLETE FEATURE/001_3.tif
+../photomask_trainingdata/COMPLETE FEATURE/001_4.tif
+../photomask_trainingdata/COMPLETE FEATURE/002_1.tif
+../photomask_trainingdata/COMPLETE FEATURE/002_2.tif
+../photomask_trainingdata/COMPLETE FEATURE/002_4.tif
+../photomask_trainingdata/COMPLETE FEATURE/004_2.tif
+../photomask_trainingdata/COMPLETE FEATURE/004_3.tif
+../photomask_trainingdata/COMPLETE FEATURE/005_1.tif
+../photomask_trainingdata/COMPLETE FEATURE/005_2.tif
+../photomask_trainingdata/COMPLETE FEATURE/006_2.tif
+../photomask_trainingdata/COMPLETE FEATURE/006_3.tif
+../photomask_trainingdata/COMPLETE FEATURE/007_1.tif
+../photomask_trainingdata/COMPLETE FEATURE/007_2.tif
+../photomask_trainingdata/COMPLETE FEATURE/007_3.tif
+../photomask_trainingdata/COMPLETE FEATURE/007_4.tif
+../photomask_trainingdata/COMPLETE FEATURE/008_1.tif
+../photomask_trainingdata/COMPLETE FEATURE/008_4.tif
+../photomask_trainingdata/COMPLETE FEATURE/015.tif
+../photomask_trainingdata/COMPLETE FEATURE/016.tif
+../photomask_trainingdata/COMPLETE FEATURE/017_1.tif
+../photomask_trainingdata/COMPLETE FEATURE/017_2.tif
+../photomask_trainingdata/COMPLETE FEATURE/017_3.tif
+../photomask_trainingdata/COMPLETE FEATURE/017_4.tif
+../photomask_trainingdata/COMPLETE FEATURE/018_1.tif
+../photomask_trainingdata/COMPLETE FEATURE/018_2.tif
+../photomask_trainingdata/COMPLETE FEATURE/018_4.tif
+../photomask_trainingdata/COMPLETE FEATURE/019_1.tif
+../photomask_trainingdata/COMPLETE FEATURE/019_2.tif
+../photomask_trainingdata/COMPLETE FEATURE/019_4.tif
+../photomask_trainingdata/COMPLETE FEATURE/020_1.tif
+../photomask_trainingdata/COMPLETE FEATURE/020_2.tif
+../photomask_trainingdata/COMPLETE FEATURE/020_4.tif
+../photomask_trainingdata/COMPLETE FEATURE/021_1.tif
+../photomask_trainingdata/COMPLETE FEATURE/021_2.tif
+../photomask_trainingdata/COMPLETE FEATURE/021_3.tif
+../photomask_trainingdata/COMPLETE FEATURE/022_1.tif
+../photomask_trainingdata/COMPLETE FEATURE/022_4.tif
+../photomask_trainingdata/COMPLETE FEATURE/023_1.tif
+../photomask_trainingdata/COMPLETE FEATURE/023_2.tif
+../photomask_trainingdata/COMPLETE FEATURE/023_3.tif
+../photomask_trainingdata/COMPLETE FEATURE/024_1.tif
+../photomask_trainingdata/COMPLETE FEATURE/024_2.tif
+../photomask_trainingdata/COMPLETE FEATURE/024_3.tif
+../photomask_trainingdata/COMPLETE FEATURE/024_4.tif
+../photomask_trainingdata/COMPLETE FEATURE/025_1.tif
+../photomask_trainingdata/COMPLETE FEATURE/025_2.tif
+../photomask_trainingdata/COMPLETE FEATURE/025_3.tif
+../photomask_trainingdata/COMPLETE FEATURE/025_4.tif
+../photomask_trainingdata/COMPLETE FEATURE/026_1.tif
+../photomask_trainingdata/COMPLETE FEATURE/026_2.tif
+../photomask_trainingdata/COMPLETE FEATURE/026_3.tif
+../photomask_trainingdata/COMPLETE FEATURE/026_4.tif
+../photomask_trainingdata/COMPLETE FEATURE/027_3.tif
+../photomask_trainingdata/COMPLETE FEATURE/027_4.tif
+../photomask_trainingdata/COMPLETE FEATURE/028_1.tif
+../photomask_trainingdata/COMPLETE FEATURE/028_4.tif
+../photomask_trainingdata/COMPLETE FEATURE/029_1.tif
+../photomask_trainingdata/COMPLETE FEATURE/029_2.tif
+../photomask_trainingdata/COMPLETE FEATURE/029_3.tif
+../photomask_trainingdata/NO FEATURE/003_1.tif
+../photomask_trainingdata/NO FEATURE/003_2.tif
+../photomask_trainingdata/NO FEATURE/003_4.tif
+../photomask_trainingdata/NO FEATURE/013.tif
+../photomask_trainingdata/NO FEATURE/014_2.tif
+../photomask_trainingdata/NO FEATURE/014_3.tif
+../photomask_trainingdata/NO FEATURE/014_4.tif
+../photomask_trainingdata/NO FEATURE/032_1.tif
+../photomask_trainingdata/NO FEATURE/032_2.tif
+../photomask_trainingdata/NO FEATURE/032_3.tif
