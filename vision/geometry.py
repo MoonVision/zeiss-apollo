@@ -37,7 +37,7 @@ def is_bordertoucher(img, ellipse):
     else:
         h, w, c = dimensions
 
-    h_, w_ = int(h + 10), int(w + 10)
+    h_, w_ = int(h + 20), int(w + 20)
     xshift = int((h_ - h) / 2)
     yshift = int((w_ - w) / 2)
 
@@ -45,7 +45,7 @@ def is_bordertoucher(img, ellipse):
 
     pad_blank = np.zeros((h_, w_))
     pad_w_ell = draw_ellipse(pad_blank, [ellipses_shifted], thickness=-1)
-    pad_w_ell_rect = cv2.rectangle(pad_w_ell, (xshift, yshift), (xshift + h, yshift + w), thickness=-1, color=.5)
+    pad_w_ell_rect = cv2.rectangle(pad_w_ell, (xshift, yshift), (xshift + h, yshift + w), thickness=-1, color=0)
 
     if (pad_w_ell_rect != 0).any():
         return True
