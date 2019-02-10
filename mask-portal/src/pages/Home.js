@@ -39,7 +39,7 @@ export default function Home({ history, match }) {
   const [latestImage, setLatestImage] = useState();
 
   useInterval(async () => {
-    const response = await api.get('/defectpositionimages/?limit=1')
+    const response = await api.get('/defectpositionimages/')
     if (response.data.count > 0 &&
        (!latestImage || response.data.results[0].id !== latestImage.id)) {
       setLatestImage(response.data.results[0]);
@@ -70,6 +70,14 @@ export default function Home({ history, match }) {
               <p>Image: {latestImage.id}</p>
               <p>Defects: {latestImage.defects.length}</p>
               <p>Taken {moment(latestImage.create_time).calendar()}</p>
+              {latestImage.defects.map((d, i) =>
+                <Fragment>
+                  <h4>Defect {i+1}</h4>
+                  <p>Center: ({d.ellipse.centerX}, {d.ellipse.centerY})</p>
+                  <p>Axis: ({d.ellipse.x}, {d.ellipse.y})</p>
+                  <p>Rotation: {Number((d.ellipse.rotation).toFixed(2))}</p>
+                </Fragment>
+              )}
             </Fragment>
             :
             <p>Loading...</p>
