@@ -7,7 +7,6 @@ from torchvision.datasets import ImageFolder
 from torchvision.transforms import Compose
 from torchvision import transforms
 
-
 from vision.geometry import ellipses_of_contour, \
     area_of_ellipse, is_bordertoucher, find_contours
 
@@ -100,7 +99,7 @@ def annotate_prediction(im, detection):
             else:
                 cv2.ellipse(annotated_im, ell, (255,0,0), 2)
 
-    return np.concatenate([im, annotated_im])
+    return np.hstack((im, annotated_im))
 
 
 def evalutate_once(index, model, ds, device):
@@ -113,12 +112,10 @@ def evalutate_once(index, model, ds, device):
         pred = torch.nn.functional.upsample(model(img.unsqueeze(0)), scale_factor=(2, 2), mode="bilinear")
         pred = pred[0].squeeze()
 
-    mask = back_tf(pred)
-    probs = torch.sigmoid(pred).data.cpu().numpy()
+    probs = 255 * torch.sigmoid(pred).data.numpy()
 
-    detection = detect_features(mask, probs)
-
-    img_a = cv2.cvtColor(mask, cv2.COLOR_GRAY2BGR)
+    detection = detect_features(probs.astype(np.uint8), probs)
+    img_a = cv2.cvtColor(back_tf(img[0]), cv2.COLOR_GRAY2BGR)
     img_annotated = annotate_prediction(img_a, detection)
 
     ell, probs, border = detection
