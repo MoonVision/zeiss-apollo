@@ -14,12 +14,13 @@ class MaskViewSet(viewsets.ModelViewSet):
 
     @action(detail=False, methods=['get'])
     def overview(self, request):
-        masks = Mask.objects.all().order_by('pk')
+        masks = Mask.objects.all().order_by('-pk')[:15]
+        masks = sorted(masks, key=lambda k: k.id)
 
         defects = []
         for mask in masks:
             defects.append(Defect.objects.filter(position_image__defect_position__mask=mask).count())
-        mask_ids = masks.values_list('id', flat=True)
+        mask_ids = [m.id for m in masks]
 
         return Response({'masks': mask_ids, 'defects': defects})
 
