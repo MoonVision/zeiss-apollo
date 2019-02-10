@@ -1,0 +1,38 @@
+.App {
+  text-align: center;
+  display: grid;
+  height: 100%;
+  width: 100%;
+
+  grid-template-areas:
+  "header"
+  "content";
+  grid-template-rows: 50px auto;
+}
+
+.header {
+  background-color: #314a58;
+  grid-area: header;
+  font-size: 18px;
+  line-height: 20px;
+  color: white;
+  
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.nav-selection.primary {
+  font-size: 20px;
+}
+
+.nav-selection {
+  padding-left: 15px;
+  font-size: 14px;
+}
+
+.content {
+  grid-area: content;
+  background-color: #f2f2f2;
+}

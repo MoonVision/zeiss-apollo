@@ -7,12 +7,20 @@ from mask.models import Mask, DefectPosition, DefectPositionImage, Defect, Ellip
 class MaskSerializer(serializers.ModelSerializer):
     create_time = serializers.ReadOnlyField()
     defect_position_count = serializers.SerializerMethodField(read_only=True)
+    defect_image_count = serializers.SerializerMethodField(read_only=True)
+    defect_count = serializers.SerializerMethodField(read_only=True)
     class Meta:
         model = Mask
-        fields = ('id', 'create_time', 'defect_position_count')
+        fields = ('id', 'create_time', 'defect_position_count', 'defect_image_count', 'defect_count')
 
     def get_defect_position_count(self, obj):
         return DefectPosition.objects.filter(mask=obj).count()
+
+    def get_defect_image_count(self, obj):
+        return DefectPositionImage.objects.filter(defect_position__mask=obj).count()
+
+    def get_defect_count(self, obj):
+        return Defect.objects.filter(position_image__defect_position__mask=obj).count()
 
 
 class DefectPositionSerializer(serializers.ModelSerializer):

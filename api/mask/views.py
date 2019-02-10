@@ -15,9 +15,16 @@ class DefectPositionViewSet(viewsets.ModelViewSet):
 
 
 class DefectPositionImageViewSet(viewsets.ModelViewSet):
-    queryset = DefectPositionImage.objects.all()
     serializer_class = DefectPositionImageSerializer
 
+    def get_queryset(self):
+        queryset = DefectPositionImage.objects.all()
+
+        mask = self.request.query_params.get('mask', None)
+        if mask is not None:
+            queryset = queryset.filter(defect_position__mask=mask)
+
+        return queryset
 
 class DefectViewSet(viewsets.ModelViewSet):
     queryset = Defect.objects.all()
