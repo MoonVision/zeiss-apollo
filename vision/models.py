@@ -23,16 +23,9 @@ class SlimWide(nn.Module):
                           stride=1),
                 nn.BatchNorm2d(channels),
                 nn.AvgPool2d(kernel_size=2, stride=2), nn.ReLU(True))
-        self.convnet4 = nn.Sequential(
-                nn.Conv2d(channels, channels, kernel_size=7, padding=1,
-                          stride=1),
-                nn.BatchNorm2d(channels),
-                nn.AvgPool2d(kernel_size=2, stride=2), nn.ReLU(True))
 
         self.convnet4 = nn.Conv2d(channels, 1, kernel_size=1, padding=0,
                                   stride=1)
-        #self.scalar = nn.Parameter(data=torch.tensor([1.0]))
-        #self.bias = nn.Parameter(data=torch.tensor([0.0]))
 
     def forward(self, x):
         y = self.convnet1(x)
@@ -40,7 +33,7 @@ class SlimWide(nn.Module):
         y = self.convnet3(y)
         y = self.convnet4(y)
 
-        return y #self.scalar * y - self.bias
+        return y
 
 class SlimWideDeeper(nn.Module):
 
