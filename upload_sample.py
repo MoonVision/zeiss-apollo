@@ -38,7 +38,6 @@ x_position = random.randint(10, 190)
 y_position = random.randint(10, 190)
 for k in range(len(ds)):
     imgs, ellipses, classes = evalutate_once(k, model, ds, device)
-    print(imgs)
     buf = BytesIO()
     buf.write(cv2.imencode('.png', imgs)[1].tostring())
 
@@ -84,10 +83,9 @@ for k in range(len(ds)):
         data[f'new_defects[{i}]'] = json.dumps(d)
 
 
-    print(data)
-    print(files)
-
-    response = requests.post(f'{BASE_URL}/defectpositionimages/', files=files,
-                data=data)
-    print(response.json())
-    break
+    if ellipses:
+        print(data)
+        print(files)
+        response = requests.post(f'{BASE_URL}/defectpositionimages/', files=files, data=data)
+        print(response.json())
+        break

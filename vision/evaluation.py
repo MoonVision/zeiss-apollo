@@ -121,6 +121,7 @@ def evalutate_once(index, model, ds, device):
         classes.append([label_map(2)])
         ellipses = None
 
+
     return img_annotated, ellipses, classes
 
 
@@ -133,7 +134,7 @@ def evaluate(model, ds, device):
         img, ellipes, cls = evalutate_once(k, model, ds, device)
 
         stacked_images.append(img)
-        ellipses_list.append(ellipsis)
+        ellipses_list.append(ellipes)
         classes.append(cls)
 
     return stacked_images, ellipses_list, classes
